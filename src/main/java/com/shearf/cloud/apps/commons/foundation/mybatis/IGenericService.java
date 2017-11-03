@@ -27,8 +27,9 @@ public interface IGenericService<E, K extends Serializable> {
 
     E get(K id);
 
-    long count(Object condition);
+    long count(Object param);
 
     List<E> queryAll();
 
+    List<E> queryByParam(Object param);
 }
