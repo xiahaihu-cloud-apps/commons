@@ -10,16 +10,23 @@ import lombok.Getter;
 import java.io.Serializable;
 import java.util.Map;
 
+/**
+ * @author xiahaihu
+ */
 @Data
 public class Response<T> implements Serializable{
 
     private static final long serialVersionUID = -3459719094846341206L;
 
-    private int code;
+    private int code = Status.SUCCESS.getCode();
 
-    private String message;
+    private String message = Status.SUCCESS.getMessage();
 
-    private T data;
+    private T data = null;
+
+    public Response() {
+
+    }
 
     public Response(int code, String message, T data) {
         this.code = code;
