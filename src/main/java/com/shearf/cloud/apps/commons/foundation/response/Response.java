@@ -2,6 +2,7 @@ package com.shearf.cloud.apps.commons.foundation.response;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
+import com.shearf.cloud.apps.commons.foundation.error.BaseError;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,9 +19,9 @@ public class Response<T> implements Serializable{
 
     private static final long serialVersionUID = -3459719094846341206L;
 
-    private int code = Status.SUCCESS.getCode();
+    private int code = BaseError.FAIL.getCode();
 
-    private String message = Status.SUCCESS.getMessage();
+    private String message = BaseError.SUCCESS.getMessage();
 
     private T data = null;
 
@@ -35,69 +36,34 @@ public class Response<T> implements Serializable{
     }
 
     public static <T> Response<T> success() {
-        return Response.result(Status.SUCCESS);
+        return Response.result(BaseError.SUCCESS);
     }
 
     public static <T> Response<T> success(T data) {
-        return Response.result(Status.SUCCESS, data);
+        return Response.result(BaseError.SUCCESS, data);
     }
 
     public static <T> Response<T> fail() {
-        return Response.result(Status.FAILURE);
+        return Response.result(BaseError.FAIL);
     }
 
     public static <T> Response<T> fail(String message) {
-        return Response.result(Status.FAILURE.getCode(), message, null);
+        return Response.result(BaseError.FAIL.getCode(), message, null);
     }
 
     public static <T> Response<T> fail(T data) {
-        return Response.result(Status.FAILURE, data);
+        return Response.result(BaseError.FAIL, data);
     }
 
-    public static <T> Response<T> result(Status status) {
-        return Response.result(status.getCode(), status.getMessage(), null);
+    public static <T> Response<T> result(BaseError error) {
+        return Response.result(error.getCode(), error.getMessage(), null);
     }
 
-    public static <T> Response<T> result(Status status, T data) {
-        return Response.result(status.getCode(), status.getMessage(), data);
+    public static <T> Response<T> result(BaseError error, T data) {
+        return Response.result(error.getCode(), error.getMessage(), data);
     }
 
     public static <T> Response<T> result(int code, String message, T data) {
         return new Response<>(code, message, data);
-    }
-
-
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public enum Status {
-
-        FAILURE(-1, "请求失败"),
-        SUCCESS(0, "请求成功"),
-        ;
-
-        @Getter
-        private int code;
-        @Getter
-        private String message;
-
-        private static Map<Integer, Status> map;
-
-        static {
-            map = Maps.newHashMap();
-            for (Status status : Status.values()) {
-                if (!map.containsKey(status.code)) {
-                    map.put(status.code, status);
-                }
-            }
-        }
-
-        public static Status getStatus(int code) {
-            Preconditions.checkArgument(Status.map.containsKey(code), "不存在相应Code的状态");
-            return Status.map.get(code);
-        }
-
-        public static String getStatusMessage(int code) {
-            Preconditions.checkArgument(Status.map.containsKey(code), "不存在相应Code的状态");
-            return Status.map.get(code).getMessage();
-        }
     }
 }
