@@ -1,15 +1,9 @@
 package com.shearf.cloud.apps.commons.foundation.response;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Maps;
 import com.shearf.cloud.apps.commons.foundation.error.BaseError;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * @author xiahaihu
